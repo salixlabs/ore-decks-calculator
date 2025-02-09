@@ -69,8 +69,11 @@ function calculateCost() {
         optionsTotal += 4000;
     }
     if (document.getElementById('rainEscape').checked) {
-        optionsTotal += (firstFloorSF + secondFloorSF) * 22;
+        optionsTotal += (firstFloorSF + secondFloorSF) * 28;
     }
+    // Add custom option cost
+    const customPrice = parseFloat(document.getElementById('customOptionPrice').value) || 0;
+    optionsTotal += customPrice;
     totalCost += optionsTotal;
 
     // Update section totals
@@ -96,6 +99,9 @@ function initializeAutoCalculate() {
     numberInputs.forEach(input => {
         input.addEventListener('input', calculateCost);
     });
+
+    // Listen to custom option price
+    document.getElementById('customOptionPrice').addEventListener('input', calculateCost);
 
     // Listen to radio buttons
     const radioInputs = document.querySelectorAll('input[type="radio"]');
@@ -143,6 +149,10 @@ function resetCalculator() {
     document.querySelectorAll('input[type="checkbox"]').forEach(input => {
         input.checked = false;
     });
+
+    // Clear custom option fields
+    document.getElementById('customOptionText').value = '';
+    document.getElementById('customOptionPrice').value = '';
 
     // Recalculate to update totals
     calculateCost();
