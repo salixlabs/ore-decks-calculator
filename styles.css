@@ -26,6 +26,7 @@ body {
     padding: 10px;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
     gap: 10px;
 }
 
@@ -127,7 +128,7 @@ input[type="number"] {
 .radio-label {
     display: flex !important;
     align-items: center;
-    padding: 4px 0;
+    padding: 6px 0;
     cursor: pointer;
 }
 
@@ -140,8 +141,9 @@ input[type="number"] {
 input[type="radio"],
 input[type="checkbox"] {
     margin: 0;
-    transform: scale(1);
+    transform: scale(1.5);
     flex-shrink: 0;
+    margin-right: 4px;
 }
 
 /* Remove any previous grid styles that might interfere */
@@ -226,4 +228,23 @@ button:hover {
 
 .cost-summary h2 {
     margin-top: 0;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.section-header h2 {
+    margin: 0;
+    flex-grow: 1;
+}
+
+.section-total {
+    color: var(--primary-gold);
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 10px;
 } 

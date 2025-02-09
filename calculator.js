@@ -1,10 +1,27 @@
+// Helper function to format currency with commas
+function formatCurrency(number) {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(number);
+}
+
+// Helper function to format numbers with commas but no decimals
+function formatNumber(number) {
+    return new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    }).format(number);
+}
+
 function calculateCost() {
     // Get measurements
     const firstFloorSF = parseFloat(document.getElementById('firstFloorSF').value) || 0;
     const secondFloorSF = parseFloat(document.getElementById('secondFloorSF').value) || 0;
     const railingLF = parseFloat(document.getElementById('railingLF').value) || 0;
     const steps = parseFloat(document.getElementById('steps').value) || 0;
-    const posts = parseFloat(document.getElementById('posts').value) || 0;
 
     // Get selected materials
     const firstLevel = document.querySelector('input[name="firstLevel"]:checked');
@@ -12,50 +29,63 @@ function calculateCost() {
     const railing = document.querySelector('input[name="railing"]:checked');
 
     let totalCost = 0;
+    let firstLevelTotal = 0;
+    let secondLevelTotal = 0;
+    let railingsTotal = 0;
+    let optionsTotal = 0;
 
     // Calculate first level cost
     if (firstLevel) {
-        totalCost += firstFloorSF * parseFloat(firstLevel.dataset.price);
+        firstLevelTotal = firstFloorSF * parseFloat(firstLevel.dataset.price);
+        totalCost += firstLevelTotal;
     }
 
     // Calculate second level cost
     if (secondLevel) {
-        totalCost += secondFloorSF * parseFloat(secondLevel.dataset.price);
+        secondLevelTotal = secondFloorSF * parseFloat(secondLevel.dataset.price);
+        totalCost += secondLevelTotal;
     }
 
     // Calculate railing cost
     if (railing) {
-        totalCost += railingLF * parseFloat(railing.dataset.price);
+        railingsTotal = railingLF * parseFloat(railing.dataset.price);
+        totalCost += railingsTotal;
     }
 
     // Calculate additional options
     if (document.getElementById('pressureTreated').checked) {
-        totalCost += (firstFloorSF + secondFloorSF) * 32;
+        optionsTotal += firstFloorSF * 32;
     }
-    if (document.getElementById('postWrap').checked) {
-        totalCost += posts * 355;
+    if (document.getElementById('secondStoryFraming').checked) {
+        optionsTotal += secondFloorSF * 38;
     }
     if (document.getElementById('stairs').checked) {
-        totalCost += steps * 255;
+        optionsTotal += steps * 255;
     }
     if (document.getElementById('dumpFee').checked) {
-        totalCost += (firstFloorSF + secondFloorSF) * 3;
+        optionsTotal += (firstFloorSF + secondFloorSF) * 3;
     }
     if (document.getElementById('permits').checked) {
-        totalCost += 4000;
+        optionsTotal += 4000;
     }
     if (document.getElementById('rainEscape').checked) {
-        totalCost += (firstFloorSF + secondFloorSF) * 22;
+        optionsTotal += (firstFloorSF + secondFloorSF) * 22;
     }
+    totalCost += optionsTotal;
+
+    // Update section totals
+    document.getElementById('firstLevelTotal').textContent = formatCurrency(firstLevelTotal);
+    document.getElementById('secondLevelTotal').textContent = formatCurrency(secondLevelTotal);
+    document.getElementById('railingsTotal').textContent = formatCurrency(railingsTotal);
+    document.getElementById('optionsTotal').textContent = formatCurrency(optionsTotal);
 
     // Display results
     document.getElementById('result').innerHTML = `
         <h3>Cost Breakdown:</h3>
-        <p>Total Square Footage: ${(firstFloorSF + secondFloorSF).toFixed(2)} SF</p>
-        <p>Total Railing Length: ${railingLF} LF</p>
-        <p>Number of Steps: ${steps}</p>
-        <p>Number of Posts: ${posts}</p>
-        <p><strong>Total Estimated Cost: $${totalCost.toFixed(2)}</strong></p>
+        <p>Total Square Footage: ${formatNumber(firstFloorSF + secondFloorSF)} SF</p>
+        <p>Total Railing Length: ${formatNumber(railingLF)} LF</p>
+        <p>Number of Steps: ${formatNumber(steps)}</p>
+        <p><strong>Total Estimated Cost: ${formatCurrency(totalCost)}</strong></p>
     `;
 }
 
