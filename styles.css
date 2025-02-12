@@ -228,7 +228,7 @@ button:hover {
     background-image: url('Assets/ORE-tail.png');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 300px;
+    background-size: 150px;
     background-blend-mode: soft-light;
     position: relative;
 }
@@ -243,7 +243,7 @@ button:hover {
     background-image: url('Assets/ORE-tail.png');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 300px;
+    background-size: 150px;
     opacity: 0.15;
     pointer-events: none;
 }
